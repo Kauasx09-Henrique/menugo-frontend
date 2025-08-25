@@ -1,0 +1,422 @@
+/* src/index.css - VERSÃO LIMPA (SEM ESTILOS DE ADMIN) */
+
+/* 1. VARIÁVEIS GLOBAIS (TEMA DO PROJETO) */
+:root {
+  /* Cores */
+  --cor-primaria: #0d6efd;
+  --cor-primaria-hover: #0b5ed7;
+  --cor-fundo: #f4f7f9;
+  --cor-superficie: #ffffff;
+  --cor-texto-principal: #212529;
+  --cor-texto-secundario: #6c757d;
+  --cor-borda: #e9ecef;
+  --cor-sucesso: #146c43;
+  --cor-sucesso-fundo: #d1e7dd;
+  --cor-erro: #b02a37;
+  --cor-erro-fundo: #f8d7da;
+  --cor-admin-fundo: #0d1117;
+  --cor-admin-superficie: #161b22;
+  --cor-admin-texto: #c9d1d9;
+  --cor-admin-texto-hover: #ffffff;
+
+  /* Fontes */
+  --fonte-titulo: 'Poppins', sans-serif;
+  --fonte-corpo: 'Roboto', sans-serif;
+
+  /* Outros */
+  --sombra-padrao: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --border-radius-padrao: 8px;
+  --transicao-padrao: all 0.2s ease-in-out;
+}
+
+/* 2. ESTILOS GLOBAIS E RESET */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte-corpo);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fonte-titulo);
+}
+
+/* 3. COMPONENTES E UTILITÁRIOS GERAIS */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+button, .admin-btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-padrao);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: var(--transicao-padrao);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+button:hover, .admin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.error-message {
+  padding: 1rem;
+  border-radius: 6px;
+  background-color: var(--cor-erro-fundo);
+  color: var(--cor-erro);
+  border: 1px solid var(--cor-erro);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* 4. LAYOUT PRINCIPAL (CLIENTE) E HEADER */
+.main-header {
+  background-color: var(--cor-superficie);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--cor-borda);
+  box-shadow: var(--sombra-padrao);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.logo {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 1.75rem;
+  text-decoration: none;
+  color: var(--cor-texto-principal);
+  display: flex;
+  align-items: center;
+}
+.page-header {
+  text-align: center;
+  margin: 2rem 0 3rem 0;
+}
+.page-header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.category h2 {
+  font-size: 2rem;
+  border-bottom: 2px solid var(--cor-primaria);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--cor-primaria);
+}
+.product-card {
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--border-radius-padrao);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--sombra-padrao);
+  transition: var(--transicao-padrao);
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.product-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+.product-price {
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+.add-to-cart-btn {
+  background-color: var(--cor-primaria);
+  color: white;
+}
+.add-to-cart-btn:hover {
+  background-color: var(--cor-primaria-hover);
+}
+
+/* 5. PÁGINA DE LOGIN */
+.login-page-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 85px);
+  padding: 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--cor-superficie);
+  padding: 3rem;
+  border-radius: var(--border-radius-padrao);
+  box-shadow: var(--sombra-padrao);
+}
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.login-header h2 {
+  margin: 1rem 0 0.5rem 0;
+  font-size: 2rem;
+}
+.input-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cor-texto-secundario);
+}
+.input-group input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.5rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--border-radius-padrao);
+  box-sizing: border-box;
+  font-size: 1rem;
+  transition: var(--transicao-padrao);
+}
+.login-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: var(--cor-primaria);
+  color: white;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+/* 6. AJUSTES RESPONSIVOS DO CLIENTE */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2.2rem;
+  }
+  .product-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .product-action {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+/* Adicione no final de src/pages/admin/style/admin.css */
+
+/* Estilos do Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background-color: var(--cor-superficie);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-padrao);
+  box-shadow: var(--sombra-padrao);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border-left: 5px solid var(--card-color); /* Borda colorida dinâmica */
+  transition: var(--transicao-padrao);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.stat-card-icon {
+  background-color: var(--card-color);
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card-value {
+  font-family: var(--fonte-titulo);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-card-title {
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+}
+
+/* Ações Rápidas */
+.quick-actions {
+  margin-top: 2rem;
+}
+
+.quick-actions h3 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background-color: var(--cor-superficie);
+  border-radius: var(--border-radius-padrao);
+  box-shadow: var(--sombra-padrao);
+  text-decoration: none;
+  color: var(--cor-texto-principal);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transicao-padrao);
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  color: var(--cor-primaria);
+}
+/* Adicione no final de src/pages/admin/style/admin.css */
+
+/* Estilos para busca de CEP */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.cep-group {
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  right: 12px;
+  top: 40px; /* Ajuste conforme a altura do seu label */
+  border: 3px solid rgba(0,0,0,0.1);
+  border-left-color: var(--cor-primaria);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* Melhorias no Card de Empresa */
+.company-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.company-card {
+  background-color: var(--cor-superficie);
+  border-radius: var(--border-radius-padrao);
+  box-shadow: var(--sombra-padrao);
+  overflow: hidden;
+  transition: var(--transicao-padrao);
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.company-card.active {
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+.company-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.company-card-logo {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+.company-card-info {
+  padding: 1rem;
+  flex-grow: 1; /* Faz esta área crescer e empurra as ações para baixo */
+}
+
+.company-card-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.2rem;
+}
+
+.company-card-info p {
+  margin: 0;
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+}
+
+.company-card-actions {
+  display: flex;
+  padding: 0 1rem 1rem 1rem;
+  gap: 0.5rem;
+  border-top: 1px solid var(--cor-borda);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.company-card-actions button {
+  flex-grow: 1;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.company-card-actions button:not(:first-child) {
+  flex-grow: 0;
+  width: 40px;
+}
