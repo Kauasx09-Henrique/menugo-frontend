@@ -1,14 +1,12 @@
-// src/pages/HomePage.jsx
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
-import { useCart } from '../context/CartContext'; // 1. Importe o hook do carrinho
-import Swal from 'sweetalert2'; // 2. Importe o SweetAlert para as notificações
+import { useCart } from '../context/CartContext';
+import Swal from 'sweetalert2';
 
 export default function HomePage() {
   const EMPRESA_ID = 1;
-  const { addToCart } = useCart(); // 3. Pegue a função addToCart do contexto
-
+  const { addToCart } = useCart();
   const [empresa, setEmpresa] = useState(null);
   const [categoriasComProdutos, setCategoriasComProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,26 +16,19 @@ export default function HomePage() {
     async function loadData() {
       try {
         setLoading(true);
-        // Busca a empresa
         const empresaResponse = await api.get(`/empresas/${EMPRESA_ID}`);
         setEmpresa(empresaResponse.data);
-
-        // Busca as categorias da empresa
         const categoriasResponse = await api.get(`/categorias/empresa/${EMPRESA_ID}`);
         const categorias = categoriasResponse.data;
-
-        // Para cada categoria, busca seus produtos
         const categoriasComProdutosPromises = categorias.map(async (categoria) => {
           const produtosResponse = await api.get(`/produtos/categoria/${categoria.id}`);
           return { ...categoria, produtos: produtosResponse.data };
         });
-
         const resolvedCategoriasComProdutos = await Promise.all(categoriasComProdutosPromises);
         setCategoriasComProdutos(resolvedCategoriasComProdutos);
-
         setError('');
       } catch (err) {
-        setError('Falha ao carregar o cardápio. Verifique se os dados foram cadastrados.');
+        setError('Falha ao carregar o cardápio.');
         console.error(err);
       } finally {
         setLoading(false);
@@ -46,52 +37,65 @@ export default function HomePage() {
     loadData();
   }, []);
 
-  // 4. Esta é a função que foi atualizada!
   const handleAddToCart = (product) => {
-    addToCart(product); // Adiciona o produto ao estado global do carrinho
-
-    // Mostra uma notificação "toast" bonita no canto da tela
+    addToCart(product);
     Swal.fire({
       toast: true,
       icon: 'success',
       title: `${product.nome} foi adicionado!`,
       position: 'top-end',
       showConfirmButton: false,
-      timer: 2000, // A notificação some em 2 segundos
+      timer: 1500,
       timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
     });
+  };
+
+  const scrollToCategory = (categoryId) => {
+    const element = document.getElementById(`category-${categoryId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   if (loading) return <div className="loading-message">Carregando cardápio...</div>;
   if (error) return <div className="error-message">{error}</div>;
 
   return (
-    <div className="container">
-      <header className="page-header">
-        <h1>{empresa?.nome}</h1>
-        <p>{empresa?.rua}, {empresa?.numero}</p>
-      </header>
+    <>
+      <div className="category-nav-wrapper">
+        <nav className="category-nav container">
+          {categoriasComProdutos.map(categoria => (
+            <button key={categoria.id} onClick={() => scrollToCategory(categoria.id)}>
+              {categoria.nome}
+            </button>
+          ))}
+        </nav>
+      </div>
 
-      <main>
-        {categoriasComProdutos.map(categoria => (
-          <section key={categoria.id} className="category">
-            <h2>{categoria.nome}</h2>
-            <div className="products-grid">
-              {categoria.produtos.map(produto => (
-                <ProductCard
-                  key={produto.id}
-                  product={produto}
-                  onAddToCart={handleAddToCart} // Agora está conectado à função real!
-                />
-              ))}
-            </div>
-          </section>
-        ))}
-      </main>
-    </div>
+      <div className="container">
+        <header className="page-header">
+          <img src={empresa?.logo_url} alt={`Logo de ${empresa?.nome}`} className="company-logo" />
+          <h1>{empresa?.nome}</h1>
+          <p>{empresa?.rua}, {empresa?.numero}</p>
+        </header>
+
+        <main>
+          {categoriasComProdutos.map(categoria => (
+            <section key={categoria.id} id={`category-${categoria.id}`} className="category">
+              <h2>{categoria.nome}</h2>
+              <div className="products-grid">
+                {categoria.produtos.map(produto => (
+                  <ProductCard
+                    key={produto.id}
+                    product={produto}
+                    onAddToCart={handleAddToCart}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </main>
+      </div>
+    </>
   );
 }

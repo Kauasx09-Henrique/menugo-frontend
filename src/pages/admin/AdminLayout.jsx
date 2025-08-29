@@ -1,9 +1,8 @@
-// src/pages/admin/AdminLayout.jsx
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { AdminProvider, useAdmin } from '../../context/AdminContext';
-import { useAuth } from '../../context/AuthContext'; // Precisamos do auth para o logout
-// 1. Importando os ícones que vamos usar
-import { FaHome, FaBuilding, FaTags, FaBoxOpen, FaSignOutAlt } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
+import { FaHome, FaBuilding, FaTags, FaBoxOpen, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import logoImg from '../../assets/Logo.png'; // Importando a logo
 import './style/admin.css';
 
 // Componente interno para o cabeçalho do conteúdo
@@ -35,26 +34,30 @@ export default function AdminLayout() {
     <AdminProvider>
       <div className="admin-layout">
         <aside className="admin-sidebar">
-          <div> {/* Wrapper para conteúdo principal do sidebar */}
-            <header>
-              <h3>MenuGo Admin</h3>
+          <div>
+            <header className="sidebar-header">
+              <img src={logoImg} alt="MenuGo Logo" className="sidebar-logo" />
+              <h3>Admin</h3>
             </header>
             <nav className="sidebar-nav">
-              {/* 2. Adicionando os ícones aos links */}
               <NavLink to="/admin" end><FaHome /> Início</NavLink>
-              <NavLink to="/admin/empresas"><FaBuilding /> Gerenciar Empresas</NavLink>
-              <NavLink to="/admin/categorias"><FaTags /> Gerenciar Categorias</NavLink>
-              <NavLink to="/admin/produtos"><FaBoxOpen /> Gerenciar Produtos</NavLink>
+              <NavLink to="/admin/empresas"><FaBuilding /> Empresas</NavLink>
+              <NavLink to="/admin/categorias"><FaTags /> Categorias</NavLink>
+              <NavLink to="/admin/produtos"><FaBoxOpen /> Produtos</NavLink>
             </nav>
           </div>
 
-          {/* 3. Adicionando uma seção de usuário/logout no final */}
           <div className="sidebar-footer">
             <div className="user-info">
-              <span className="user-email">admin@gmail.com</span>
-              <span className="user-role">Administrador</span>
+              <div className="user-avatar">
+                <FaUser size={18} />
+              </div>
+              <div className="user-details">
+                <span className="user-email">Administrador</span>
+                <span className="user-role">Nível de Acesso Total</span>
+              </div>
             </div>
-            <button onClick={handleLogout} className="logout-btn">
+            <button onClick={handleLogout} className="logout-btn" title="Sair">
               <FaSignOutAlt />
             </button>
           </div>

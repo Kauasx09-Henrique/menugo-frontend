@@ -1,0 +1,116 @@
+/* src/components/header.css */
+
+.main-header {
+  background-color: var(--cor-superficie);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--cor-borda);
+  box-shadow: var(--sombra-padrao);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: var(--transicao-padrao);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-img {
+  height: 45px;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius-padrao);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transicao-padrao);
+  border: 1px solid transparent;
+}
+
+.nav-btn.admin {
+  background-color: var(--cor-primaria);
+  color: white;
+}
+
+.nav-btn.admin:hover {
+  background-color: var(--cor-primaria-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.nav-btn.logout {
+  background-color: var(--cor-erro);
+  color: white;
+}
+
+.nav-btn.logout:hover {
+  background-color: #a71d2a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.nav-btn.cart {
+  background: none;
+  color: var(--cor-texto-principal);
+  font-size: 1.5rem;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.nav-btn.cart:hover {
+  background-color: #f0f2f5;
+  transform: none;
+  box-shadow: none;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--cor-erro);
+  color: white;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--cor-superficie);
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  80% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}

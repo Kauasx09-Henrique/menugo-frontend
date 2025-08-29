@@ -4,17 +4,16 @@ const CartContext = createContext({});
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false); // 1. Estado para controlar a visibilidade
 
   const addToCart = (product) => {
     setCartItems(prevItems => {
       const itemExists = prevItems.find(item => item.id === product.id);
       if (itemExists) {
-        // Se o item já existe, aumenta a quantidade
         return prevItems.map(item =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      // Se não existe, adiciona ao carrinho com quantidade 1
       return [...prevItems, { ...product, quantity: 1 }];
     });
   };
@@ -25,7 +24,6 @@ export function CartProvider({ children }) {
 
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity <= 0) {
-      // Se a quantidade for 0 ou menos, remove o item
       removeFromCart(productId);
     } else {
       setCartItems(prevItems =>
@@ -40,7 +38,6 @@ export function CartProvider({ children }) {
     setCartItems([]);
   };
 
-  // useMemo otimiza o cálculo, que só será refeito quando cartItems mudar
   const cartTotal = useMemo(() => {
     return cartItems.reduce((total, item) => total + item.preco * item.quantity, 0);
   }, [cartItems]);
@@ -48,7 +45,6 @@ export function CartProvider({ children }) {
   const totalItemsInCart = useMemo(() => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   }, [cartItems]);
-
 
   return (
     <CartContext.Provider
@@ -59,7 +55,9 @@ export function CartProvider({ children }) {
         updateQuantity,
         cartTotal,
         totalItemsInCart,
-        clearCart
+        clearCart,
+        isCartOpen,      // 2. Partilha o estado
+        setIsCartOpen  // 3. Partilha a função para o modificar
       }}
     >
       {children}

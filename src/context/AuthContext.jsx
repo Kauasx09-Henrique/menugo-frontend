@@ -1,51 +1,61 @@
-// src/context/AuthContext.jsx
 import { createContext, useState, useContext, useEffect } from 'react';
 import api from '../services/api';
 
 const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('@CardapioApp:token');
-    if (storedToken) {
+    const storedToken = localStorage.getItem('@MenuGo:token');
+    const storedUser = localStorage.getItem('@MenuGo:user');
+
+    if (storedToken && storedUser) {
       api.defaults.headers.Authorization = `Bearer ${storedToken}`;
       setToken(storedToken);
+      setUser(JSON.parse(storedUser));
     }
     setLoading(false);
   }, []);
 
-  async function login(email, senha) {
+  async function login(credentials) {
     try {
-      const response = await api.post('/auth/login', { email, senha });
-      const { token: newToken } = response.data;
+      const response = await api.post('/auth/login', credentials);
+      const { token: newSessionToken, user: loggedInUser } = response.data;
 
-      localStorage.setItem('@CardapioApp:token', newToken);
-      api.defaults.headers.Authorization = `Bearer ${newToken}`;
-      setToken(newToken);
+      localStorage.setItem('@MenuGo:token', newSessionToken);
+      localStorage.setItem('@MenuGo:user', JSON.stringify(loggedInUser));
+
+      api.defaults.headers.Authorization = `Bearer ${newSessionToken}`;
+
+      setToken(newSessionToken);
+      setUser(loggedInUser);
+
+      return loggedInUser; // Retorna os dados do utilizador para a página de login
     } catch (error) {
       console.error("Falha no login", error);
-      throw new Error('Email ou senha inválidos.');
+      // Re-lança o erro para que a página de login o possa apanhar
+      throw new Error(error.response?.data?.error || 'Falha no login.');
     }
   }
 
   function logout() {
-    localStorage.removeItem('@CardapioApp:token');
+    localStorage.removeItem('@MenuGo:token');
+    localStorage.removeItem('@MenuGo:user');
     api.defaults.headers.Authorization = null;
     setToken(null);
+    setUser(null);
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated: !!token, token, loading, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated: !!user, user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-// O ERRO PROVAVELMENTE ESTÁ NA LINHA ABAIXO
-// Garanta que a palavra "export" está antes de "function useAuth"
 export function useAuth() {
   return useContext(AuthContext);
 }
